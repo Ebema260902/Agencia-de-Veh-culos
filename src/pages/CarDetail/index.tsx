@@ -82,8 +82,6 @@ export default function CarDetailPage() {
     </div>
   )
 
-  const badge = car.badge ? BADGE_LABEL[Object.keys(BADGE_LABEL).find(k => BADGE_LABEL[+k] === car.badge) as unknown as number] ?? car.badge : null
-
   const SPECS = [
     { icon: <IconCalendar size={18} />,        label: 'Año',          value: String(car.year)   },
     { icon: <IconGasStation size={18} />,      label: 'Combustible',  value: car.fuel           },
