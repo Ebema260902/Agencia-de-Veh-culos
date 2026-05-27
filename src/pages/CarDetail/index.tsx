@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import {
   IconArrowLeft, IconBrandWhatsapp, IconCar,
   IconGasStation, IconManualGearbox, IconCalendar,
-  IconBolt, IconShare, IconChevronRight,
+  IconBolt, IconShare, IconChevronRight, IconAlertCircle,
 } from '@tabler/icons-react'
 import { supabase } from '@/lib/supabase'
 import type { Vehicle, Fuel } from '@/types'
@@ -41,15 +41,18 @@ export default function CarDetailPage() {
   const [car, setCar]         = useState<(Vehicle & { price?: number }) | null>(null)
   const [related, setRelated] = useState<(Vehicle & { price?: number })[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
 
   useEffect(() => {
     if (!id) return
     setLoading(true)
     setImgLoaded(false)
+    setFetchError(false)
     supabase.from('cars').select('*').eq('id', id).single()
       .then(({ data, error }) => {
-        if (error || !data) { setLoading(false); return }
+        if (error) { setFetchError(true); setLoading(false); return }
+        if (!data) { setLoading(false); return }
         const v = toVehicle(data as CarRow)
         setCar(v)
         supabase.from('cars').select('*').eq('brand', v.brand).neq('id', id).limit(3)
@@ -73,6 +76,15 @@ export default function CarDetailPage() {
   }
 
   if (loading) return <CarDetailSkeleton />
+
+  if (fetchError) return (
+    <div className="page-error">
+      <IconAlertCircle size={48} className="page-error-icon" aria-hidden />
+      <h3>No se pudo cargar el vehículo</h3>
+      <p>Verifica tu conexión e intenta de nuevo.</p>
+      <button className="btn btn-blue" onClick={() => window.location.reload()}>Reintentar</button>
+    </div>
+  )
 
   if (!car) return (
     <div className="cd-not-found">

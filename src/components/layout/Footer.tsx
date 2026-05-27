@@ -1,6 +1,13 @@
+import { Link } from 'react-router-dom'
 import { IconBrandFacebook, IconBrandInstagram, IconBrandWhatsapp } from '@tabler/icons-react'
 
-const NAV   = [['Catálogo','#catalogo'],['Servicios','#servicios'],['Taller','#taller'],['Contacto','#contacto']] as const
+const NAV: [string, string][] = [
+  ['Catálogo',  '/catalogo'],
+  ['Nosotros',  '/nosotros'],
+  ['Servicios', '/#servicios'],
+  ['Taller',    '/#taller'],
+  ['Contacto',  '/contacto'],
+]
 const BRANDS = ['Toyota','BYD','Hyundai','Lexus','Ford','Suzuki'] as const
 
 export default function Footer() {
@@ -22,12 +29,20 @@ export default function Footer() {
 
         <div>
           <div className="footer-col-title">Navegación</div>
-          {NAV.map(([label, href]) => <a key={href} className="footer-col-link" href={href}>{label}</a>)}
+          {NAV.map(([label, href]) =>
+            href.startsWith('/') && !href.includes('#') ? (
+              <Link key={href} to={href} className="footer-col-link">{label}</Link>
+            ) : (
+              <a key={href} className="footer-col-link" href={href}>{label}</a>
+            )
+          )}
         </div>
 
         <div>
           <div className="footer-col-title">Marcas</div>
-          {BRANDS.map(b => <a key={b} className="footer-col-link" href="#">{b}</a>)}
+          {BRANDS.map(b => (
+            <Link key={b} to="/catalogo" className="footer-col-link">{b}</Link>
+          ))}
         </div>
       </div>
 

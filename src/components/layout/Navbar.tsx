@@ -1,32 +1,42 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconBrandWhatsapp, IconMenu2, IconX } from '@tabler/icons-react'
-import logoImg from '@/assets/images/logocolor2.png'
+import logoImg from '@/assets/images/logoToyo.png'
 
 const WA = 'https://wa.me/+50686088696'
+
+const navItems = [
+  { to: '/',         label: 'Inicio',    end: true  },
+  { to: '/catalogo', label: 'Catálogo',  end: false },
+  { to: '/nosotros', label: 'Nosotros',  end: false },
+  { to: '/contacto', label: 'Contacto',  end: false },
+]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
-  const isHome = pathname === '/'
-  const prefix = isHome ? '' : '/'
 
-  // Close drawer on route change
   useEffect(() => { setOpen(false) }, [pathname])
 
-  // Prevent body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  const anchorLinks = [
-    { href: isHome ? '#' : '/',      label: 'Inicio'    },
-    { href: '/catalogo',            label: 'Catálogo', isRoute: true },
-    { href: `${prefix}#servicios`,  label: 'Servicios' },
-    { href: `${prefix}#taller`,     label: 'Taller'    },
-    { href: `${prefix}#contacto`,   label: 'Contacto'  },
-  ]
+  const renderLink = (item: typeof navItems[number], mobile = false) => {
+    const base = mobile ? 'nav-drawer-link' : 'nav-link'
+    return (
+      <NavLink
+        key={item.to}
+        to={item.to}
+        end={item.end}
+        className={({ isActive }) => `${base}${isActive ? ` ${base}--active` : ''}`}
+        onClick={mobile ? () => setOpen(false) : undefined}
+      >
+        {item.label}
+      </NavLink>
+    )
+  }
 
   return (
     <>
@@ -35,30 +45,15 @@ export default function Navbar() {
           <img src={logoImg} alt="Toyo de Occidente" className="nav-logo-img" />
         </Link>
 
-        {/* Desktop links */}
         <div className="nav-links">
-          {anchorLinks.map(({ href, label, isRoute }) =>
-            isRoute ? (
-              <NavLink
-                key={href}
-                to={href}
-                className={({ isActive }) => `nav-link${isActive ? ' nav-link--active' : ''}`}
-              >
-                {label}
-              </NavLink>
-            ) : (
-              <a key={href} href={href} className="nav-link">{label}</a>
-            )
-          )}
+          {navItems.map(item => renderLink(item))}
         </div>
 
-        {/* Desktop WhatsApp */}
         <a className="nav-wa nav-wa--desk" href={WA} target="_blank" rel="noopener noreferrer">
           <IconBrandWhatsapp size={15} aria-hidden />
           WhatsApp
         </a>
 
-        {/* Hamburger */}
         <button
           className="nav-burger"
           onClick={() => setOpen(o => !o)}
@@ -69,32 +64,11 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile drawer overlay */}
       {open && <div className="nav-overlay" onClick={() => setOpen(false)} />}
 
       <div className={`nav-drawer ${open ? 'nav-drawer--open' : ''}`}>
         <div className="nav-drawer-links">
-          {anchorLinks.map(({ href, label, isRoute }) =>
-            isRoute ? (
-              <NavLink
-                key={href}
-                to={href}
-                className={({ isActive }) => `nav-drawer-link${isActive ? ' nav-drawer-link--active' : ''}`}
-                onClick={() => setOpen(false)}
-              >
-                {label}
-              </NavLink>
-            ) : (
-              <a
-                key={href}
-                href={href}
-                className="nav-drawer-link"
-                onClick={() => setOpen(false)}
-              >
-                {label}
-              </a>
-            )
-          )}
+          {navItems.map(item => renderLink(item, true))}
         </div>
         <a className="btn btn-wa nav-drawer-wa" href={WA} target="_blank" rel="noopener noreferrer">
           <IconBrandWhatsapp size={17} aria-hidden />

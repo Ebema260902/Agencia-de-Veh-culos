@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { IconCar, IconSearch, IconX, IconAdjustmentsHorizontal, IconArrowsSort } from '@tabler/icons-react'
+import { IconCar, IconSearch, IconX, IconAdjustmentsHorizontal, IconArrowsSort, IconAlertCircle } from '@tabler/icons-react'
 import { supabase } from '@/lib/supabase'
 import type { Vehicle, Fuel } from '@/types'
 
@@ -52,6 +52,7 @@ const SORT_OPTIONS = [
 export default function CatalogPage() {
   const [all, setAll]         = useState<(Vehicle & { price?: number })[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(false)
 
   const [search, setSearch]           = useState('')
   const [brands, setBrands]           = useState<string[]>([])
@@ -64,7 +65,11 @@ export default function CatalogPage() {
 
   useEffect(() => {
     supabase.from('cars').select('*').then(({ data, error }) => {
-      if (!error && data) setAll((data as CarRow[]).map(toVehicle))
+      if (error) {
+        setFetchError(true)
+      } else if (data) {
+        setAll((data as CarRow[]).map(toVehicle))
+      }
       setLoading(false)
     })
   }, [])
@@ -107,6 +112,15 @@ export default function CatalogPage() {
     if (sort === 'price_d') res = [...res].sort((a, b) => (b.price ?? 0) - (a.price ?? 0))
     return res
   }, [all, search, brands, fuels, trans, yearMin, yearMax, sort])
+
+  if (fetchError) return (
+    <div className="page-error">
+      <IconAlertCircle size={48} className="page-error-icon" aria-hidden />
+      <h3>No se pudo cargar el inventario</h3>
+      <p>Verifica tu conexión a internet e intenta de nuevo.</p>
+      <button className="btn btn-blue" onClick={() => window.location.reload()}>Reintentar</button>
+    </div>
+  )
 
   return (
     <>
