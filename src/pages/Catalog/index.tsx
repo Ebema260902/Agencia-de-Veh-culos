@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { IconCar, IconSearch, IconX, IconAdjustmentsHorizontal, IconArrowsSort, IconAlertCircle } from '@tabler/icons-react'
 import { supabase } from '@/lib/supabase'
+import { toOptimizedUrl } from '@/lib/imageUrl'
 import type { Vehicle, Fuel } from '@/types'
 
 interface CarRow {
@@ -297,7 +298,7 @@ export default function CatalogPage() {
                         <span className={`cbadge ${BADGE_CLASS[v.badge] ?? ''}`}>{v.badge}</span>
                       )}
                       {v.image
-                        ? <img src={v.image} alt={`${v.brand} ${v.model}`} loading="lazy" />
+                        ? <img src={toOptimizedUrl(v.image, 480)} alt={`${v.brand} ${v.model}`} loading="lazy" decoding="async" />
                         : <IconCar size={52} aria-hidden />
                       }
                     </div>

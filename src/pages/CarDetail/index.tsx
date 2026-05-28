@@ -6,6 +6,7 @@ import {
   IconBolt, IconShare, IconChevronRight, IconAlertCircle,
 } from '@tabler/icons-react'
 import { supabase } from '@/lib/supabase'
+import { toOptimizedUrl } from '@/lib/imageUrl'
 import type { Vehicle, Fuel } from '@/types'
 
 interface CarRow {
@@ -132,9 +133,10 @@ export default function CarDetailPage() {
               <>
                 {!imgLoaded && <div className="cd-img-placeholder"><IconCar size={64} /></div>}
                 <img
-                  src={car.image}
+                  src={toOptimizedUrl(car.image, 900)}
                   alt={`${car.brand} ${car.model}`}
                   className={`cd-img${imgLoaded ? ' cd-img--loaded' : ''}`}
+                  decoding="async"
                   onLoad={() => setImgLoaded(true)}
                 />
               </>
@@ -227,7 +229,7 @@ export default function CarDetailPage() {
                       <span className={`cbadge ${BADGE_CLASS[v.badge] ?? ''}`}>{v.badge}</span>
                     )}
                     {v.image
-                      ? <img src={v.image} alt={`${v.brand} ${v.model}`} loading="lazy" />
+                      ? <img src={toOptimizedUrl(v.image, 320)} alt={`${v.brand} ${v.model}`} loading="lazy" decoding="async" />
                       : <IconCar size={36} />
                     }
                   </div>

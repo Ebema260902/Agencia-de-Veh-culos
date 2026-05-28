@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { IconCar, IconSearch } from '@tabler/icons-react'
 import { supabase } from '@/lib/supabase'
+import { toOptimizedUrl } from '@/lib/imageUrl'
 import type { Vehicle, Fuel } from '@/types'
 
 interface CarRow {
@@ -132,7 +133,7 @@ export default function InventorySection() {
               <div className="cimg">
                 {v.badge && <span className={`cbadge ${BADGE[v.badge]}`}>{v.badge}</span>}
                 {v.image
-                  ? <img src={v.image} alt={`${v.brand} ${v.model}`} className="cimg-photo" />
+                  ? <img src={toOptimizedUrl(v.image, 480)} alt={`${v.brand} ${v.model}`} className="cimg-photo" loading="lazy" decoding="async" />
                   : <IconCar size={56} aria-hidden />
                 }
               </div>

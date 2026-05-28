@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { IconBrandWhatsapp, IconMenu2, IconX } from '@tabler/icons-react'
+import { IconBrandWhatsapp, IconBrandFacebook, IconBrandInstagram, IconMenu2, IconX } from '@tabler/icons-react'
 import logoImg from '@/assets/images/logoToyo.png'
 
 const WA = 'https://wa.me/+50686088696'
+const FB = 'https://www.facebook.com/ToyodeOccidente/'
+const IG = 'https://www.instagram.com/toyodeoccidentecr/'
 
 const navItems = [
   { to: '/',         label: 'Inicio',    end: true  },
@@ -49,10 +51,17 @@ export default function Navbar() {
           {navItems.map(item => renderLink(item))}
         </div>
 
-        <a className="nav-wa nav-wa--desk" href={WA} target="_blank" rel="noopener noreferrer">
-          <IconBrandWhatsapp size={15} aria-hidden />
-          WhatsApp
-        </a>
+        <div className="nav-socials">
+          <a className="nav-social" href={FB} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <IconBrandFacebook size={16} />
+          </a>
+          <a className="nav-social" href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <IconBrandInstagram size={16} />
+          </a>
+          <a className="nav-social" href={WA} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <IconBrandWhatsapp size={16} />
+          </a>
+        </div>
 
         <button
           className="nav-burger"
