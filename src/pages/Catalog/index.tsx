@@ -156,9 +156,18 @@ export default function CatalogPage() {
           <aside className={`cat-sidebar ${sidebarOpen ? 'cat-sidebar--open' : ''}`}>
             <div className="cat-sidebar-head">
               <span className="cat-sidebar-title">Filtros</span>
-              {activeChips.length > 0 && (
-                <button className="cat-clear-link" onClick={clearAll}>Limpiar todo</button>
-              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                {activeChips.length > 0 && (
+                  <button className="cat-clear-link" onClick={clearAll}>Limpiar todo</button>
+                )}
+                <button
+                  className="cat-sidebar-close"
+                  onClick={() => setSidebarOpen(false)}
+                  aria-label="Cerrar filtros"
+                >
+                  <IconX size={18} />
+                </button>
+              </div>
             </div>
 
             {/* Marca */}

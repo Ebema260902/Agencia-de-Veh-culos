@@ -170,13 +170,14 @@ body {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
+  background: #07162a;
 }
 
 .hero-bg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   object-fit: cover;
   object-position: center;
   z-index: 0;
@@ -699,6 +700,18 @@ textarea.form-field { height: 110px; resize: none; }
   border-bottom: 1px solid var(--border);
 }
 .cat-sidebar-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.cat-sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px;
+  border-radius: var(--r);
+  transition: background var(--t), color var(--t);
+  align-items: center;
+}
+.cat-sidebar-close:hover { background: var(--border); color: var(--text); }
 .cat-clear-link {
   font-size: 12px;
   color: var(--red);
@@ -1289,6 +1302,7 @@ textarea.form-field { height: 110px; resize: none; }
   }
   .cat-sidebar--open { display: block; }
   .cat-mob-filter-btn { display: inline-flex; }
+  .cat-sidebar-close { display: flex; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 

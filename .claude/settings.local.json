@@ -4,7 +4,9 @@
       "WebFetch(domain:commons.wikimedia.org)",
       "Bash(Get-ChildItem -Path \"d:\\\\emanu\\\\Escritorio\\\\Freelancer\\\\ToyoOccidente\" -Recurse -Directory)",
       "Bash(Select-Object -First 20)",
-      "Bash(Format-Table FullName)"
+      "Bash(Format-Table FullName)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)"
     ]
   }
 }
